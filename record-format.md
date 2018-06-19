@@ -1,0 +1,18 @@
+# Record Format
+
+OpenKeyChain registration records are stored as colord coin transactions on blockchain. Those colored coin transactions must conform to the following rules.
+
+* Each transaction must contain OpenKeyChain marker output in order to be considered as a valid OpenKeyChain transaction.
+* A valid OpenKeyChain marker output must contain following fields.
+
+| Field | Description | Size |
+| --- | --- | --- |
+| Marker | Magic bytes indicating that this output is an OpenKeyChain marker output. It must be 0x4B43. | 2 bytes |
+| Version | Major, Minor version information. 0x0100 for now \(1.0\) | 2 bytes |
+| OP code | An opcode representing an operation represented by the output. | 2 bytes |
+| Payload | Additional information or metadata. | Varies |
+
+* In order to create a subdomain or an identity under another domain or a subdomain, a new OpenKeyChain registration record transaction from the parent domain/subdomain to the subdomain/identity created must be forged and signed using the parent domain/subdomain certificate.
+* The public key of the new subdomain/identity being created must be represented as an address format in the output right before the marker output. If the transaction lacks such an output before the marker output, the transaction is considered invalid.
+* All following outputs after the marker output are ignored.
+
